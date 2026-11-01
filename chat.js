@@ -147,7 +147,7 @@
     save();
     if (open) {
       render();
-      setTimeout(() => input.focus(), 50);
+      setTimeout(() => input.focus({ preventScroll: true }), 50);
     }
   }
 
@@ -188,7 +188,7 @@
       busy = false;
       save();
       render();
-      if (state.open) input.focus();
+      if (state.open) input.focus({ preventScroll: true });
     }
   }
 
