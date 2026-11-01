@@ -3,10 +3,99 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Play Padel – Padel pályák Budapesten</title>
-  <meta name="description" content="Play Padel Budapest: három padel pálya (piros, zöld, lila), pályafoglalás, szabályok és minden, amit a padelről tudni érdemes.">
-  <link rel="stylesheet" href="style.css?v=20261101g">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23d7f34a'/><path d='M14 38c22 8 50 8 72 0M14 62c22-8 50-8 72 0' stroke='%23fff' stroke-width='6' fill='none'/></svg>">
+  <title>Padel pálya Budapest – online foglalás | Play Padel</title>
+  <meta name="description" content="Padelpálya-bérlés Budapesten: 3 szabványos pálya, online foglalás 1–2 órára, ütőbérlés, kezdő edzés. Hétköznap 7–22, hétvégén 8–22, 8 000 Ft/órától.">
+  <link rel="canonical" href="https://lederermate.github.io/demo-site/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#0f1424">
+
+  <!-- Közösségi megosztás (Facebook, Messenger, LinkedIn, X) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="hu_HU">
+  <meta property="og:site_name" content="Play Padel">
+  <meta property="og:title" content="Padel pálya Budapest – online foglalás | Play Padel">
+  <meta property="og:description" content="3 szabványos padelpálya Budapesten. Foglalj online pár kattintással – ütőt is bérelhetsz, kezdőknek edzést is tartunk.">
+  <meta property="og:url" content="https://lederermate.github.io/demo-site/">
+  <meta property="og:image" content="https://lederermate.github.io/demo-site/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A Play Padel piros pályája esti világításban">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-48.png" type="image/png" sizes="48x48">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <link rel="preload" href="fonts/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=20261101h">
+
+  <!-- Strukturált adatok (Google helyi találatok, térkép, AI-keresők) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SportsActivityLocation",
+        "@id": "https://lederermate.github.io/demo-site/#playpadel",
+        "name": "Play Padel",
+        "description": "Padelpálya-bérlés Budapesten: három szabványos, 20×10 méteres, üvegfalas padelpálya online foglalással, ütőbérléssel és kezdő edzéssel.",
+        "url": "https://lederermate.github.io/demo-site/",
+        "image": [
+          "https://lederermate.github.io/demo-site/images/og-image.jpg",
+          "https://lederermate.github.io/demo-site/images/palya-piros-attekintes.jpg",
+          "https://lederermate.github.io/demo-site/images/palya-zold-attekintes.jpg",
+          "https://lederermate.github.io/demo-site/images/palya-lila-attekintes.jpg"
+        ],
+        "logo": "https://lederermate.github.io/demo-site/apple-touch-icon.png",
+        "telephone": "+3612345678",
+        "email": "info@playpadel.hu",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Padel utca 3.",
+          "postalCode": "1117",
+          "addressLocality": "Budapest",
+          "addressCountry": "HU"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "07:00",
+            "closes": "22:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Saturday", "Sunday"],
+            "opens": "08:00",
+            "closes": "22:00"
+          }
+        ],
+        "priceRange": "8 000 – 12 000 Ft / óra",
+        "currenciesAccepted": "HUF",
+        "sport": "Padel",
+        "amenityFeature": [
+          { "@type": "LocationFeatureSpecification", "name": "Ingyenes parkoló (30 autó)", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Fedett kerékpártároló", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Ütőbérlés", "value": true }
+        ],
+        "potentialAction": {
+          "@type": "ReserveAction",
+          "target": "https://lederermate.github.io/demo-site/#foglalas",
+          "name": "Pályafoglalás"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://lederermate.github.io/demo-site/#website",
+        "url": "https://lederermate.github.io/demo-site/",
+        "name": "Play Padel",
+        "inLanguage": "hu-HU",
+        "publisher": { "@id": "https://lederermate.github.io/demo-site/#playpadel" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -39,8 +128,7 @@
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-text">
-        <p class="eyebrow">Budapest · 3 pálya</p>
-        <h1>Gyere, ütögess.<br>Itt a <span class="hl">padel</span>.</h1>
+        <h1><span class="eyebrow">3 padel pálya Budapesten</span> Gyere, ütögess.<br>Itt a <span class="hl">padel</span>.</h1>
         <p class="lead">A Play Padel Budapest padel-otthona. Három pálya – <b class="c-red">piros</b>, <b class="c-green">zöld</b> és <b class="c-purple">lila</b> –, kezdőknek és rutinos játékosoknak egyaránt.</p>
         <div class="hero-cta">
           <a href="#foglalas" class="btn btn-ball">Pályát foglalok</a>
@@ -91,7 +179,7 @@
         </div>
         <div class="courts">
           <article class="court-card" style="--court: var(--red)">
-            <img class="court-photo" src="images/palya-piros-attekintes.jpg" alt="Piros padelpálya felülnézetből, esti világításban" width="1600" height="1000" loading="lazy">
+            <picture><source type="image/webp" srcset="images/palya-piros-attekintes-800.webp 800w, images/palya-piros-attekintes.webp 1600w" sizes="(max-width: 960px) min(100vw, 520px), 360px"><img class="court-photo" src="images/palya-piros-attekintes-800.jpg" srcset="images/palya-piros-attekintes-800.jpg 800w, images/palya-piros-attekintes.jpg 1600w" sizes="(max-width: 960px) min(100vw, 520px), 360px" alt="Piros padelpálya felülnézetből, esti világításban" width="1600" height="1000" loading="lazy"></picture>
             <div class="court-card-body">
               <span class="tag">1-es pálya</span>
               <h3>Piros pálya</h3>
@@ -100,7 +188,7 @@
             </div>
           </article>
           <article class="court-card" style="--court: var(--green)">
-            <img class="court-photo" src="images/palya-zold-attekintes.jpg" alt="Zöld padelpálya felülnézetből, esti világításban" width="1600" height="1000" loading="lazy">
+            <picture><source type="image/webp" srcset="images/palya-zold-attekintes-800.webp 800w, images/palya-zold-attekintes.webp 1600w" sizes="(max-width: 960px) min(100vw, 520px), 360px"><img class="court-photo" src="images/palya-zold-attekintes-800.jpg" srcset="images/palya-zold-attekintes-800.jpg 800w, images/palya-zold-attekintes.jpg 1600w" sizes="(max-width: 960px) min(100vw, 520px), 360px" alt="Zöld padelpálya felülnézetből, esti világításban" width="1600" height="1000" loading="lazy"></picture>
             <div class="court-card-body">
               <span class="tag">2-es pálya</span>
               <h3>Zöld pálya</h3>
@@ -109,7 +197,7 @@
             </div>
           </article>
           <article class="court-card" style="--court: var(--purple)">
-            <img class="court-photo" src="images/palya-lila-attekintes.jpg" alt="Lila padelpálya felülnézetből, esti világításban" width="1600" height="1000" loading="lazy">
+            <picture><source type="image/webp" srcset="images/palya-lila-attekintes-800.webp 800w, images/palya-lila-attekintes.webp 1600w" sizes="(max-width: 960px) min(100vw, 520px), 360px"><img class="court-photo" src="images/palya-lila-attekintes-800.jpg" srcset="images/palya-lila-attekintes-800.jpg 800w, images/palya-lila-attekintes.jpg 1600w" sizes="(max-width: 960px) min(100vw, 520px), 360px" alt="Lila padelpálya felülnézetből, esti világításban" width="1600" height="1000" loading="lazy"></picture>
             <div class="court-card-body">
               <span class="tag">3-as pálya</span>
               <h3>Lila pálya</h3>
@@ -130,12 +218,12 @@
           <p>Látványtervek a pályáinkról – esti világításban, üvegfalakkal, ahogy játék közben látod őket.</p>
         </div>
         <div class="gallery">
-          <figure><button type="button" data-full="images/palya-piros-attekintes.jpg"><img src="images/palya-piros-attekintes.jpg" alt="Piros pálya áttekintő nézet" loading="lazy" width="1600" height="1000"></button><figcaption>Piros pálya</figcaption></figure>
-          <figure><button type="button" data-full="images/palya-zold-halo.jpg"><img src="images/palya-zold-halo.jpg" alt="Zöld pálya az alapvonal mögül" loading="lazy" width="1600" height="1000"></button><figcaption>Zöld pálya – az alapvonalról</figcaption></figure>
-          <figure><button type="button" data-full="images/palya-lila-attekintes.jpg"><img src="images/palya-lila-attekintes.jpg" alt="Lila pálya áttekintő nézet" loading="lazy" width="1600" height="1000"></button><figcaption>Lila pálya</figcaption></figure>
-          <figure><button type="button" data-full="images/palya-piros-halo.jpg"><img src="images/palya-piros-halo.jpg" alt="Piros pálya az alapvonal mögül" loading="lazy" width="1600" height="1000"></button><figcaption>Piros pálya – az alapvonalról</figcaption></figure>
-          <figure><button type="button" data-full="images/palya-zold-attekintes.jpg"><img src="images/palya-zold-attekintes.jpg" alt="Zöld pálya áttekintő nézet" loading="lazy" width="1600" height="1000"></button><figcaption>Zöld pálya</figcaption></figure>
-          <figure><button type="button" data-full="images/palya-lila-halo.jpg"><img src="images/palya-lila-halo.jpg" alt="Lila pálya az alapvonal mögül" loading="lazy" width="1600" height="1000"></button><figcaption>Lila pálya – az alapvonalról</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-piros-attekintes.webp"><picture><source type="image/webp" srcset="images/palya-piros-attekintes-800.webp 800w, images/palya-piros-attekintes.webp 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px"><img src="images/palya-piros-attekintes-800.jpg" srcset="images/palya-piros-attekintes-800.jpg 800w, images/palya-piros-attekintes.jpg 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px" alt="Piros pálya áttekintő nézet" loading="lazy" width="1600" height="1000"></picture></button><figcaption>Piros pálya</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-zold-halo.webp"><picture><source type="image/webp" srcset="images/palya-zold-halo-800.webp 800w, images/palya-zold-halo.webp 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px"><img src="images/palya-zold-halo-800.jpg" srcset="images/palya-zold-halo-800.jpg 800w, images/palya-zold-halo.jpg 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px" alt="Zöld pálya az alapvonal mögül" loading="lazy" width="1600" height="1000"></picture></button><figcaption>Zöld pálya – az alapvonalról</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-lila-attekintes.webp"><picture><source type="image/webp" srcset="images/palya-lila-attekintes-800.webp 800w, images/palya-lila-attekintes.webp 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px"><img src="images/palya-lila-attekintes-800.jpg" srcset="images/palya-lila-attekintes-800.jpg 800w, images/palya-lila-attekintes.jpg 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px" alt="Lila pálya áttekintő nézet" loading="lazy" width="1600" height="1000"></picture></button><figcaption>Lila pálya</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-piros-halo.webp"><picture><source type="image/webp" srcset="images/palya-piros-halo-800.webp 800w, images/palya-piros-halo.webp 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px"><img src="images/palya-piros-halo-800.jpg" srcset="images/palya-piros-halo-800.jpg 800w, images/palya-piros-halo.jpg 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px" alt="Piros pálya az alapvonal mögül" loading="lazy" width="1600" height="1000"></picture></button><figcaption>Piros pálya – az alapvonalról</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-zold-attekintes.webp"><picture><source type="image/webp" srcset="images/palya-zold-attekintes-800.webp 800w, images/palya-zold-attekintes.webp 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px"><img src="images/palya-zold-attekintes-800.jpg" srcset="images/palya-zold-attekintes-800.jpg 800w, images/palya-zold-attekintes.jpg 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px" alt="Zöld pálya áttekintő nézet" loading="lazy" width="1600" height="1000"></picture></button><figcaption>Zöld pálya</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-lila-halo.webp"><picture><source type="image/webp" srcset="images/palya-lila-halo-800.webp 800w, images/palya-lila-halo.webp 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px"><img src="images/palya-lila-halo-800.jpg" srcset="images/palya-lila-halo-800.jpg 800w, images/palya-lila-halo.jpg 1600w" sizes="(max-width: 560px) 100vw, (max-width: 960px) 50vw, 360px" alt="Lila pálya az alapvonal mögül" loading="lazy" width="1600" height="1000"></picture></button><figcaption>Lila pálya – az alapvonalról</figcaption></figure>
         </div>
       </div>
       <dialog class="lightbox" id="lightbox">
@@ -420,9 +508,9 @@
     </div>
   </footer>
 
-  <script src="config.js?v=20261101g"></script>
-  <script src="booking.js?v=20261101g"></script>
-  <script src="script.js?v=20261101g"></script>
-  <script src="chat.js?v=20261101g"></script>
+  <script src="config.js?v=20261101h"></script>
+  <script src="booking.js?v=20261101h"></script>
+  <script src="script.js?v=20261101h"></script>
+  <script src="chat.js?v=20261101h"></script>
 </body>
 </html>

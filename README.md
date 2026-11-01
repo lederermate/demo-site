@@ -139,6 +139,19 @@ Költség: üzenetenként jellemzően 0,1–0,3 cent (Haiku 5.5: $0.10 / $0.50 p
 a rendszerprompt gyorsítótárazva van).
 Napló: **Edge Functions → chatbot → Logs** (`[chatbot] kör …` sorok tokenszámokkal).
 
+## SEO
+
+- `index.html` `<head>`: title, description, canonical, Open Graph / Twitter kártya (`images/og-image.jpg`, 1200×630),
+  JSON-LD strukturált adat (`SportsActivityLocation` – cím, telefon, nyitvatartás, árkategória; `WebSite`).
+- `sitemap.xml` (képekkel) – Google Search Console-ban beküldendő.
+- Képek: `<picture>` + WebP, 800 px-es és 1600 px-es változat (`-800.webp`, `.webp`, `-800.jpg`).
+  Új kép hozzáadásakor ezeket is el kell készíteni.
+- Favicon: `favicon.svg`, `favicon-48.png`, `apple-touch-icon.png`.
+- **Domainváltáskor** (pl. playpadel.hu) a `https://lederermate.github.io/demo-site/` címet cserélni kell
+  az `index.html`-ben (canonical, og:*, JSON-LD), az `adatvedelem.html` canonicaljában és a `sitemap.xml`-ben;
+  saját domainen a `robots.txt` is a gyökérbe kerülhet (`Sitemap: https://…/sitemap.xml`).
+- A JSON-LD-ben lévő cím/telefon/nyitvatartás is minta adat – a valós adatokkal együtt frissítendő.
+
 ## Helyi futtatás
 
 ```bash

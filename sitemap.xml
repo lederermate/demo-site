@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://lederermate.github.io/demo-site/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <image:image><image:loc>https://lederermate.github.io/demo-site/images/palya-piros-attekintes.jpg</image:loc></image:image>
+    <image:image><image:loc>https://lederermate.github.io/demo-site/images/palya-zold-attekintes.jpg</image:loc></image:image>
+    <image:image><image:loc>https://lederermate.github.io/demo-site/images/palya-lila-attekintes.jpg</image:loc></image:image>
+    <image:image><image:loc>https://lederermate.github.io/demo-site/images/palya-piros-halo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://lederermate.github.io/demo-site/images/palya-zold-halo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://lederermate.github.io/demo-site/images/palya-lila-halo.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://lederermate.github.io/demo-site/adatvedelem.html</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+</urlset>

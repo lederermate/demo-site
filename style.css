@@ -244,6 +244,8 @@ a { color: inherit; }
 }
 .hero .eyebrow, .section-dark .eyebrow { color: var(--ball); }
 .hero h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.02em; margin-bottom: 1.2rem; }
+.hero h1 .eyebrow { display: block; font-family: "Inter", sans-serif; line-height: 1.5; letter-spacing: .14em; }
+picture { display: block; }
 .hl { color: var(--ball); }
 .lead { font-size: 1.15rem; color: rgba(255,255,255,.82); max-width: 34rem; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1.8rem 0 2.4rem; }
