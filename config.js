@@ -10,6 +10,6 @@
 // adatbázis jogosultságai adják (lásd supabase/schema.sql).
 // A "secret" / "service_role" kulcsot SOHA ne írd ide!
 window.PLAY_PADEL_CONFIG = {
-  supabaseUrl: '',
+  supabaseUrl: 'https://mvxakuksgydasbnyyfzf.supabase.co',
   supabaseKey: '',
 };
