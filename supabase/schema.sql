@@ -18,6 +18,8 @@
 --     az elfogadott verzió és időpont foglalásonként rögzítésre kerül.
 --   * Adatmegőrzés: a lejárt foglalások 90 nap után automatikusan törlődnek
 --     (pg_cron, a fájl végén) – összhangban az adatvedelem.html-lel.
+--   * Értesítések (Google Naptár + e-mailek): a supabase/functions/foglalas-ertesito
+--     Edge Function, amit egy adatbázis-webhook hív meg (lásd README).
 -- =====================================================================
 
 create extension if not exists btree_gist;
@@ -29,6 +31,7 @@ create table if not exists public.bookings (
   end_at      timestamptz not null,
   name        text        not null check (char_length(name) between 2 and 80),
   phone       text        not null check (phone ~ '^\+?[0-9 ()/-]{7,20}$'),
+  email       text        check (email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$' and char_length(email) <= 254),
   status      text        not null default 'confirmed' check (status in ('confirmed', 'cancelled')),
   created_at  timestamptz not null default now(),
   privacy_version     text,
@@ -46,6 +49,14 @@ create index if not exists bookings_start_idx on public.bookings (start_at);
 -- Korábbi telepítés frissítése: új oszlopok az adatkezelési tájékoztató elfogadásához
 alter table public.bookings add column if not exists privacy_version text;
 alter table public.bookings add column if not exists privacy_accepted_at timestamptz;
+alter table public.bookings add column if not exists email text;
+do $$
+begin
+  alter table public.bookings add constraint bookings_email_check
+    check (email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$' and char_length(email) <= 254);
+exception when duplicate_object then null;
+end
+$$;
 
 alter table public.bookings enable row level security;
 revoke all on public.bookings from anon, authenticated;
@@ -75,9 +86,10 @@ $$;
 
 -- ---------------------------------------------------------------------
 -- Foglalás létrehozása ellenőrzésekkel.
--- (A régi, tájékoztató-paraméter nélküli változatot eltávolítjuk.)
+-- (A korábbi változatokat eltávolítjuk.)
 -- ---------------------------------------------------------------------
 drop function if exists public.create_booking(text, date, time, int, text, text);
+drop function if exists public.create_booking(text, date, time, int, text, text, text);
 
 -- ---------------------------------------------------------------------
 -- Hibakódok (a PostgREST HTTP státuszként adja vissza):
@@ -90,6 +102,7 @@ create or replace function public.create_booking(
   p_minutes int,
   p_name    text,
   p_phone   text,
+  p_email   text,
   p_privacy_version text
 )
 returns bigint
@@ -107,10 +120,15 @@ declare
   v_name      text := btrim(p_name);
   v_phone     text := btrim(p_phone);
   v_digits    text := regexp_replace(btrim(p_phone), '[^0-9]', '', 'g');
+  v_email     text := lower(btrim(p_email));
   v_id        bigint;
 begin
   if p_privacy_version is null or btrim(p_privacy_version) = '' or char_length(p_privacy_version) > 20 then
     raise exception 'A foglaláshoz el kell fogadni az adatkezelési tájékoztatót.' using errcode = 'PT400';
+  end if;
+
+  if v_email is null or v_email !~ '^[^@\s]+@[^@\s]+\.[^@\s]+$' or char_length(v_email) > 254 then
+    raise exception 'Kérjük, adj meg érvényes e-mail címet.' using errcode = 'PT400';
   end if;
 
   if p_court is null or p_court not in ('piros', 'zold', 'lila') then
@@ -146,8 +164,8 @@ begin
   end if;
 
   begin
-    insert into public.bookings (court, start_at, end_at, name, phone, privacy_version, privacy_accepted_at)
-    values (p_court, v_start, v_end, v_name, v_phone, btrim(p_privacy_version), now())
+    insert into public.bookings (court, start_at, end_at, name, phone, email, privacy_version, privacy_accepted_at)
+    values (p_court, v_start, v_end, v_name, v_phone, v_email, btrim(p_privacy_version), now())
     returning id into v_id;
   exception
     when exclusion_violation then
@@ -163,9 +181,9 @@ $$;
 
 -- Jogosultságok: a weboldal (anon) csak ezt a két függvényt hívhatja.
 revoke execute on function public.get_busy_slots(date) from public;
-revoke execute on function public.create_booking(text, date, time, int, text, text, text) from public;
+revoke execute on function public.create_booking(text, date, time, int, text, text, text, text) from public;
 grant execute on function public.get_busy_slots(date) to anon, authenticated;
-grant execute on function public.create_booking(text, date, time, int, text, text, text) to anon, authenticated;
+grant execute on function public.create_booking(text, date, time, int, text, text, text, text) to anon, authenticated;
 
 
 -- ---------------------------------------------------------------------

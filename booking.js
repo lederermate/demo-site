@@ -12,7 +12,7 @@
   const CLOSE = 22 * 60;    // zárás percben
   const DAYS_AHEAD = 14;    // ennyi nap látszik a naptárban
   // Az adatkezelési tájékoztató aktuális verziója (adatvedelem.html) – foglalásonként rögzítjük
-  const PRIVACY_VERSION = '2026-11-01';
+  const PRIVACY_VERSION = '2026-11-01.2';
 
   const cfg = window.PLAY_PADEL_CONFIG || {};
   const LIVE = Boolean(cfg.supabaseUrl && cfg.supabaseKey);
@@ -71,14 +71,15 @@
       const args = {
         p_court: b.court, p_date: b.date, p_start: fmt(b.start) + ':00',
         p_minutes: b.minutes, p_name: b.name, p_phone: b.phone,
-        p_privacy_version: b.privacyVersion,
+        p_email: b.email, p_privacy_version: b.privacyVersion,
       };
       try {
         await this.rpc('create_booking', args);
       } catch (e) {
-        // Átmeneti: amíg az adatbázisban a régi (tájékoztató-paraméter nélküli)
+        // Átmeneti: amíg az adatbázisban a régi (e-mail és tájékoztató paraméter nélküli)
         // függvény fut, arra esünk vissza. A schema.sql újrafuttatása után törölhető.
         if (e.code !== 'PGRST202') throw e;
+        delete args.p_email;
         delete args.p_privacy_version;
         await this.rpc('create_booking', args);
       }
@@ -333,15 +334,21 @@
 
     const nameEl = form.elements.name;
     const phoneEl = form.elements.phone;
+    const emailEl = form.elements.email;
     const privacyEl = form.elements.privacy;
     const name = nameEl.value.trim();
     const phone = phoneEl.value.trim();
+    const email = emailEl.value.trim();
     const nameOk = name.length >= 2;
     const phoneOk = /^\+?[0-9 ()/-]{7,20}$/.test(phone);
+    const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) && email.length <= 254;
     nameEl.classList.toggle('invalid', !nameOk);
     phoneEl.classList.toggle('invalid', !phoneOk);
-    if (!nameOk || !phoneOk) {
-      setMsg(!nameOk ? 'Kérjük, add meg a neved.' : 'Kérjük, adj meg érvényes telefonszámot.', 'err');
+    emailEl.classList.toggle('invalid', !emailOk);
+    if (!nameOk || !phoneOk || !emailOk) {
+      setMsg(!nameOk ? 'Kérjük, add meg a neved.'
+        : !phoneOk ? 'Kérjük, adj meg érvényes telefonszámot.'
+        : 'Kérjük, adj meg érvényes e-mail címet.', 'err');
       return;
     }
     privacyEl.closest('.consent').classList.toggle('invalid', !privacyEl.checked);
@@ -353,7 +360,7 @@
 
     const booking = {
       court: state.court, date: state.date, start: state.start, minutes: state.minutes,
-      name, phone, privacyVersion: PRIVACY_VERSION,
+      name, phone, email, privacyVersion: PRIVACY_VERSION,
     };
     submitBtn.disabled = true;
     submitBtn.textContent = 'Küldés…';
@@ -361,9 +368,10 @@
       await api.create(booking);
       const d = dateOf(booking.date).toLocaleDateString('hu-HU', { month: 'long', day: 'numeric' });
       setMsg(`Köszönjük, ${name}! Lefoglaltuk: ${courtLabel(booking.court)} pálya, ${d}, ${fmt(booking.start)}–${fmt(booking.start + booking.minutes)}.`
-        + (LIVE ? '' : ' (Demó mód – csak ebben a böngészőben látszik.)'), 'ok');
+        + (LIVE ? ` A visszaigazolást elküldjük a(z) ${email} címre.` : ' (Demó mód – csak ebben a böngészőben látszik.)'), 'ok');
       nameEl.value = '';
       phoneEl.value = '';
+      emailEl.value = '';
       clearSelection();
       await loadBusy();
     } catch (err) {
