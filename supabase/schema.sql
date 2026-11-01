@@ -187,6 +187,50 @@ grant execute on function public.create_booking(text, date, time, int, text, tex
 
 
 -- ---------------------------------------------------------------------
+-- AI chat (supabase/functions/chatbot): napi üzenetkorlát a költségek és
+-- a visszaélések ellen. Csak hash-elt kulcsot tárolunk (IP-cím nélkül),
+-- a régi sorokat a lenti ütemezett feladat 2 nap után törli.
+-- ---------------------------------------------------------------------
+create table if not exists public.chat_rate_limits (
+  key    text    not null,
+  day    date    not null default (now() at time zone 'Europe/Budapest')::date,
+  count  integer not null default 0,
+  primary key (key, day)
+);
+alter table public.chat_rate_limits enable row level security;
+revoke all on public.chat_rate_limits from anon, authenticated;
+
+-- Egy üzenet elszámolása: igazat ad, ha a kulcs és az összesített napi keret is belefér.
+create or replace function public.chat_rate_hit(p_key text, p_limit_key int, p_limit_total int)
+returns boolean
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+declare
+  v_day   date := (now() at time zone 'Europe/Budapest')::date;
+  v_key   int;
+  v_total int;
+begin
+  if p_key is null or char_length(p_key) > 64 then
+    return false;
+  end if;
+  insert into public.chat_rate_limits as r (key, day, count) values (p_key, v_day, 1)
+    on conflict (key, day) do update set count = r.count + 1
+    returning count into v_key;
+  insert into public.chat_rate_limits as r (key, day, count) values ('__osszes__', v_day, 1)
+    on conflict (key, day) do update set count = r.count + 1
+    returning count into v_total;
+  return v_key <= p_limit_key and v_total <= p_limit_total;
+end;
+$$;
+
+revoke execute on function public.chat_rate_hit(text, int, int) from public, anon, authenticated;
+grant execute on function public.chat_rate_hit(text, int, int) to service_role;
+
+
+-- ---------------------------------------------------------------------
 -- Adatmegőrzés: naponta 03:15-kor (UTC) törli azokat a foglalásokat,
 -- amelyek vége több mint 90 napja elmúlt.
 -- Ha a pg_cron nem érhető el, a séma többi része ettől még működik –
@@ -200,7 +244,12 @@ begin
     '15 3 * * *',
     $job$delete from public.bookings where end_at < now() - interval '90 days'$job$
   );
-  raise notice 'Automatikus adattörlés beütemezve (playpadel-adattorles).';
+  perform cron.schedule(
+    'playpadel-chat-korlat-torles',
+    '20 3 * * *',
+    $job$delete from public.chat_rate_limits where day < (now() at time zone 'Europe/Budapest')::date - 1$job$
+  );
+  raise notice 'Automatikus adattörlés beütemezve (playpadel-adattorles, playpadel-chat-korlat-torles).';
 exception when others then
   raise warning 'Az automatikus adattörlés NEM lett beütemezve: %', sqlerrm;
 end

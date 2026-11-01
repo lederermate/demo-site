@@ -18,6 +18,8 @@ Statikus weboldal (HTML + CSS + JS) a budapesti Play Padel számára, három pá
 | `config.js` | Supabase elérés (üresen = demó mód) |
 | `supabase/schema.sql` | adatbázis séma, ütközésvédelem, jogosultságok, automatikus adattörlés |
 | `supabase/functions/foglalas-ertesito/index.ts` | Edge Function: Google Naptár szinkron + visszaigazoló / értesítő e-mailek |
+| `supabase/functions/chatbot/index.ts` | Edge Function: AI asszisztens (Claude API, tool use) |
+| `chat.js` | a chat widget a bal alsó sarokban |
 | `adatvedelem.html` | adatkezelési tájékoztató (a kiemelt céges adatok kitöltendők) |
 | `fonts/` | saját tárhelyről kiszolgált betűtípusok (Inter, Archivo – SIL OFL) |
 
@@ -107,6 +109,34 @@ HTTP header: `x-webhook-secret` = a `WEBHOOK_SECRET` értéke → **Create webho
 
 Hibakeresés: **Edge Functions → foglalas-ertesito → Logs** – minden lépésről
 `OK: …` vagy `HIBA: …` sor jelenik meg.
+
+## AI asszisztens (chat)
+
+A bal alsó sarokban lévő chat a Claude API-val (`claude-opus-5-5`, `low` effort) válaszol a
+padel szabályaival és a Play Padellel kapcsolatos kérdésekre (tesztadatok a függvény
+tudásbázisában), és segít foglalni: a `get_availability` eszközzel lekérdezi a szabad
+időpontokat, a `prepare_booking` eszközzel kijelöli az időpontot a foglalási naptárban.
+A foglalást **nem** küldi el – a nevet, telefonszámot, e-mailt és a hozzájárulást a
+látogató adja meg az űrlapon.
+
+- A beszélgetést csak a böngésző tárolja (sessionStorage), a szerver nem menti.
+- Visszaélés ellen: napi üzenetkorlát IP-nként (40) és összesen (1000) – hash-elt kulccsal,
+  `chat_rate_limits` tábla, 2 nap után törlődik.
+- Ha a modell biztonsági okból elutasítana egy kérést, a `fallbacks: "default"` beállítás
+  miatt a szerver egy ajánlott tartalék modellen futtatja újra.
+
+### Beüzemelés
+
+1. Futtasd újra a `supabase/schema.sql`-t (új: `chat_rate_limits`, `chat_rate_hit`).
+2. https://console.anthropic.com → **Billing**: tölts fel kreditet → **API Keys → Create Key**.
+   Javasolt: **Limits** alatt állíts be havi költési korlátot.
+3. Supabase **Edge Functions → Deploy a new function → Via Editor**, név: `chatbot`,
+   tartalom: `supabase/functions/chatbot/index.ts` → **Deploy**, majd kapcsold **ki** a JWT ellenőrzést.
+4. **Edge Functions → Secrets**: `ANTHROPIC_API_KEY` = az API kulcs.
+   Opcionális: `CHAT_ALLOWED_ORIGINS`, `CHAT_DAILY_LIMIT_PER_IP`, `CHAT_DAILY_LIMIT_TOTAL`.
+
+Költség: üzenetenként jellemzően 1–3 cent (a rendszerprompt gyorsítótárazva van).
+Napló: **Edge Functions → chatbot → Logs** (`[chatbot] kör …` sorok tokenszámokkal).
 
 ## Helyi futtatás
 

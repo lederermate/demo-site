@@ -12,7 +12,7 @@
   const CLOSE = 22 * 60;    // zárás percben
   const DAYS_AHEAD = 14;    // ennyi nap látszik a naptárban
   // Az adatkezelési tájékoztató aktuális verziója (adatvedelem.html) – foglalásonként rögzítjük
-  const PRIVACY_VERSION = '2026-11-01.2';
+  const PRIVACY_VERSION = '2026-11-01.3';
 
   const cfg = window.PLAY_PADEL_CONFIG || {};
   const LIVE = Boolean(cfg.supabaseUrl && cfg.supabaseKey);
@@ -378,6 +378,38 @@
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible' && !state.loading) loadBusy();
   });
+
+  // ---------- külső hozzáférés (AI asszisztens) ----------
+  // Kijelöl egy időpontot a naptárban, és az űrlaphoz görget. A foglalást nem küldi el.
+  window.PlayPadelBooking = {
+    async prefill({ date, court, start, minutes }) {
+      const today = new Date();
+      const days = Array.from({ length: DAYS_AHEAD }, (_, i) =>
+        toISO(new Date(today.getFullYear(), today.getMonth(), today.getDate() + i)));
+      if (!days.includes(date)) return { ok: false, message: `Online csak ${DAYS_AHEAD} napra előre lehet foglalni.` };
+      if (!COURTS.some((c) => c.id === court)) return { ok: false, message: 'Ismeretlen pálya.' };
+      if (![60, 90, 120].includes(minutes)) return { ok: false, message: 'Érvénytelen időtartam.' };
+
+      const radio = form.querySelector(`input[name="duration"][value="${minutes}"]`);
+      if (radio) radio.checked = true;
+      state.minutes = minutes;
+      await selectDate(date);
+
+      const startMin = parseTime(start);
+      const problem = startMin <= nowMinutes() ? 'Ez az időpont már elmúlt.' : slotProblem(court, startMin, minutes);
+      if (problem) {
+        setMsg(problem, 'err');
+        return { ok: false, message: problem };
+      }
+      pickSlot(court, startMin);
+
+      document.getElementById('foglalas').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const sel = grid.querySelector('.slot.sel');
+      const wrap = grid.parentElement;
+      if (sel && wrap) wrap.scrollTop = Math.max(0, sel.offsetTop - wrap.clientHeight / 3);
+      return { ok: true };
+    },
+  };
 
   renderStrip();
   updateSummary();

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Adatkezelési tájékoztató – Play Padel</title>
   <meta name="description" content="A Play Padel adatkezelési tájékoztatója: milyen adatokat kezelünk a pályafoglalás során, meddig, és milyen jogaid vannak.">
-  <link rel="stylesheet" href="style.css?v=20261101d">
+  <link rel="stylesheet" href="style.css?v=20261101f">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23d7f34a'/><path d='M14 38c22 8 50 8 72 0M14 62c22-8 50-8 72 0' stroke='%23fff' stroke-width='6' fill='none'/></svg>">
 </head>
 <body>
@@ -40,7 +40,7 @@
       <header class="legal-head">
         <p class="eyebrow">Adatvédelem</p>
         <h1>Adatkezelési tájékoztató</h1>
-        <p class="legal-meta">Verzió: 2026-11-01.2 · Hatályos: 2026. november 1-től</p>
+        <p class="legal-meta">Verzió: 2026-11-01.3 · Hatályos: 2026. november 1-től</p>
       </header>
 
       <aside class="legal-note">
@@ -54,6 +54,7 @@
           <li><a href="#adatok">Milyen adatokat, miért és meddig kezelünk?</a></li>
           <li><a href="#forras">Honnan származnak az adatok?</a></li>
           <li><a href="#feldolgozok">Kik férnek hozzá az adatokhoz?</a></li>
+          <li><a href="#chat">Az AI asszisztens (chat)</a></li>
           <li><a href="#sutik">Sütik és követés</a></li>
           <li><a href="#biztonsag">Adatbiztonság</a></li>
           <li><a href="#jogok">Az Ön jogai</a></li>
@@ -155,6 +156,11 @@
                 <td>Név, telefonszám, e-mail cím, a foglalás adatai</td>
               </tr>
               <tr>
+                <td><b>Anthropic, PBC</b><br><a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">Anthropic adatvédelmi irányelvek</a></td>
+                <td>Az AI asszisztens (chat) válaszainak előállítása (Claude API).</td>
+                <td>A chatbe írt üzenetek és a beszélgetés előzménye</td>
+              </tr>
+              <tr>
                 <td><b>GitHub, Inc.</b><br><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub adatvédelmi nyilatkozat</a></td>
                 <td>A weboldal tárhelye (GitHub Pages).</td>
                 <td>Technikai adatok (IP-cím, böngésző, időpont)</td>
@@ -170,8 +176,24 @@
         </p>
       </section>
 
+      <section id="chat">
+        <h2>5. Az AI asszisztens (chat)</h2>
+        <p>
+          A weboldal bal alsó sarkában lévő asszisztens mesterséges intelligenciával (az Anthropic Claude
+          modelljével) válaszol a kérdésekre, és segít szabad időpontot kijelölni a foglalási naptárban.
+          A foglalást az asszisztens nem hozza létre – azt Ön véglegesíti az űrlapon.
+        </p>
+        <ul>
+          <li><b>Mit kezelünk:</b> a chatbe írt üzeneteket és a válaszokat. Kérjük, ne írjon a chatbe személyes adatot – a foglaláshoz szükséges adatokat az űrlapon kell megadni.</li>
+          <li><b>Cél és jogalap:</b> a kérdések megválaszolása és a foglalás segítése, az adatkezelő jogos érdeke alapján – GDPR 6. cikk (1) f). A chat használata önkéntes.</li>
+          <li><b>Tárolás:</b> a beszélgetést mi nem mentjük el; az csak az Ön böngészőjében, az adott böngészőfül bezárásáig tárolódik. Az üzeneteket a válasz előállításához továbbítjuk az Anthropic részére, amely azokat a saját feltételei szerint, korlátozott ideig kezeli, és az API-n keresztül küldött adatokat alapértelmezés szerint nem használja modelltanításra.</li>
+          <li><b>Visszaélés elleni védelem:</b> a napi üzenetkorláthoz az IP-cím visszafejthetetlen kivonatát (hash) és egy számlálót tároljuk, legfeljebb 2 napig.</li>
+          <li><b>Pontosság:</b> a válaszokat gép állítja elő, ezért tévedhetnek. Kötelező érvényű információért (árak, nyitvatartás) keressen minket telefonon vagy e-mailben.</li>
+        </ul>
+      </section>
+
       <section id="sutik">
-        <h2>5. Sütik és követés</h2>
+        <h2>6. Sütik és követés</h2>
         <p>
           A weboldal <b>nem használ sütiket</b>, látogatottságmérő vagy hirdetési követőkódot, és külső
           szolgáltatótól (például a Google-tól) sem tölt be betűtípust vagy más tartalmat. A foglaltsági
@@ -181,7 +203,7 @@
       </section>
 
       <section id="biztonsag">
-        <h2>6. Adatbiztonság</h2>
+        <h2>7. Adatbiztonság</h2>
         <ul>
           <li>A weboldal és az adatbázis közötti kapcsolat titkosított (HTTPS).</li>
           <li>A foglalási adatokat a weboldalról nem lehet lekérdezni; az adatbázis csak az ellenőrzött foglalási műveletet engedi.</li>
@@ -191,7 +213,7 @@
       </section>
 
       <section id="jogok">
-        <h2>7. Az Ön jogai</h2>
+        <h2>8. Az Ön jogai</h2>
         <p>Az adatkezeléssel kapcsolatban Önt az alábbi jogok illetik meg:</p>
         <ul>
           <li><b>Hozzáférés</b> (GDPR 15. cikk): tájékoztatást kérhet arról, milyen adatait kezeljük, és másolatot kérhet róluk.</li>
@@ -210,7 +232,7 @@
       </section>
 
       <section id="jogorvoslat">
-        <h2>8. Jogorvoslat</h2>
+        <h2>9. Jogorvoslat</h2>
         <p>Ha úgy érzi, hogy adatai kezelése sérti a jogszabályokat, javasoljuk, hogy először forduljon hozzánk – igyekszünk gyorsan megoldani. Emellett jogosult:</p>
         <ul>
           <li>
@@ -224,7 +246,7 @@
       </section>
 
       <section id="modositas">
-        <h2>9. A tájékoztató módosítása</h2>
+        <h2>10. A tájékoztató módosítása</h2>
         <p>
           A tájékoztatót jogszabályváltozás vagy a szolgáltatás változása esetén módosíthatjuk. Az aktuális
           változat mindig ezen az oldalon érhető el; a foglaláskor elfogadott verziót foglalásonként rögzítjük.
@@ -249,6 +271,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261101d"></script>
+  <script src="script.js?v=20261101f"></script>
 </body>
 </html>
