@@ -3,58 +3,393 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Demo oldal</title>
-  <meta name="description" content="Egyszerű demo weboldal GitHub Pages-en.">
+  <title>Play Padel – Padel pályák Budapesten</title>
+  <meta name="description" content="Play Padel Budapest: három padel pálya (piros, zöld, lila), pályafoglalás, szabályok és minden, amit a padelről tudni érdemes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23d7f34a'/><path d='M14 38c22 8 50 8 72 0M14 62c22-8 50-8 72 0' stroke='%23fff' stroke-width='6' fill='none'/></svg>">
 </head>
 <body>
-  <header class="hero">
-    <nav class="nav">
-      <span class="logo">◆ Demo</span>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Téma váltása">🌙</button>
-    </nav>
-    <div class="hero-content">
-      <h1>Helló, világ! 👋</h1>
-      <p>Ez egy demo weboldal, ami a GitHubról fut, és bárhonnan elérhető az interneten.</p>
-      <a href="#funkciok" class="btn">Nézzünk körül</a>
+
+  <!-- Navigáció -->
+  <header class="site-header" id="top">
+    <div class="container nav">
+      <a href="#top" class="logo" aria-label="Play Padel – kezdőlap">
+        <svg class="logo-ball" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="44"/>
+          <path d="M14 38c22 8 50 8 72 0M14 62c22-8 50-8 72 0"/>
+        </svg>
+        <span>Play<strong>Padel</strong></span>
+      </a>
+      <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Menü">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="menu" id="menu">
+        <a href="#palyak">Pályák</a>
+        <a href="#padel">A padelről</a>
+        <a href="#szabalyok">Szabályok</a>
+        <a href="#arak">Árak</a>
+        <a href="#kapcsolat">Kapcsolat</a>
+        <a href="#foglalas" class="btn btn-ball btn-sm">Foglalás</a>
+      </nav>
     </div>
   </header>
 
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow">Budapest · 3 pálya</p>
+        <h1>Gyere, ütögess.<br>Itt a <span class="hl">padel</span>.</h1>
+        <p class="lead">A Play Padel Budapest padel-otthona. Három pálya – <b class="c-red">piros</b>, <b class="c-green">zöld</b> és <b class="c-purple">lila</b> –, kezdőknek és rutinos játékosoknak egyaránt.</p>
+        <div class="hero-cta">
+          <a href="#foglalas" class="btn btn-ball">Pályát foglalok</a>
+          <a href="#padel" class="btn btn-outline">Mi az a padel?</a>
+        </div>
+        <ul class="hero-stats">
+          <li><strong>3</strong><span>pálya</span></li>
+          <li><strong>4</strong><span>játékos / pálya</span></li>
+          <li><strong>20×10</strong><span>méteres pályák</span></li>
+        </ul>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="court-stack">
+          <svg class="court court-red" viewBox="0 0 200 100"><use href="#court-lines"/></svg>
+          <svg class="court court-green" viewBox="0 0 200 100"><use href="#court-lines"/></svg>
+          <svg class="court court-purple" viewBox="0 0 200 100"><use href="#court-lines"/></svg>
+        </div>
+        <div class="ball-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pálya-rajz sablon (felülnézet, 20×10 m) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="court-lines">
+        <rect class="court-fill" x="0" y="0" width="200" height="100" rx="3"/>
+        <g class="court-line" fill="none">
+          <rect x="3" y="3" width="194" height="94" rx="1"/>
+          <line x1="30.5" y1="3" x2="30.5" y2="97"/>
+          <line x1="169.5" y1="3" x2="169.5" y2="97"/>
+          <line x1="30.5" y1="50" x2="169.5" y2="50"/>
+        </g>
+        <line class="court-net" x1="100" y1="0" x2="100" y2="100"/>
+      </g>
+    </defs>
+  </svg>
+
   <main>
-    <section id="funkciok" class="section">
-      <h2>Mit tud ez az oldal?</h2>
-      <div class="cards">
-        <article class="card">
-          <div class="icon">⚡</div>
-          <h3>Gyors</h3>
-          <p>Statikus HTML és CSS, nincs szerver, nincs adatbázis – azonnal betölt.</p>
-        </article>
-        <article class="card">
-          <div class="icon">🌍</div>
-          <h3>Publikus</h3>
-          <p>A GitHub Pages ingyenesen kiszolgálja, HTTPS-sel együtt.</p>
-        </article>
-        <article class="card">
-          <div class="icon">🔄</div>
-          <h3>Automatikus</h3>
-          <p>Minden <code>git push</code> után pár percen belül frissül az élő oldal.</p>
-        </article>
+
+    <!-- Pályák -->
+    <section class="section" id="palyak">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Pályáink</p>
+          <h2>Három szín, egy szenvedély</h2>
+          <p>Mindhárom pályánk szabványos, 20×10 méteres padelpálya. Válaszd azt, amelyik a kedvenced – vagy próbáld ki mindet!</p>
+        </div>
+        <div class="courts">
+          <article class="court-card" style="--court: var(--red)">
+            <svg class="court" viewBox="0 0 200 100" aria-hidden="true"><use href="#court-lines"/></svg>
+            <div class="court-card-body">
+              <span class="tag">1-es pálya</span>
+              <h3>Piros pálya</h3>
+              <p>Az energia pályája. Gyors meccsekhez, pörgős esti játékhoz – itt mindig nagy a lendület.</p>
+              <a href="#foglalas" class="link" data-court="piros">Ezt foglalom →</a>
+            </div>
+          </article>
+          <article class="court-card" style="--court: var(--green)">
+            <svg class="court" viewBox="0 0 200 100" aria-hidden="true"><use href="#court-lines"/></svg>
+            <div class="court-card-body">
+              <span class="tag">2-es pálya</span>
+              <h3>Zöld pálya</h3>
+              <p>A klasszikus. Ideális első alkalomra, edzésre és nyugodt, hosszú labdameneteket kedvelőknek.</p>
+              <a href="#foglalas" class="link" data-court="zöld">Ezt foglalom →</a>
+            </div>
+          </article>
+          <article class="court-card" style="--court: var(--purple)">
+            <svg class="court" viewBox="0 0 200 100" aria-hidden="true"><use href="#court-lines"/></svg>
+            <div class="court-card-body">
+              <span class="tag">3-as pálya</span>
+              <h3>Lila pálya</h3>
+              <p>A különleges. Baráti bajnokságok, céges csapatépítők és hétvégi kihívások kedvelt helyszíne.</p>
+              <a href="#foglalas" class="link" data-court="lila">Ezt foglalom →</a>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section">
-      <h2>Kis interaktív próba</h2>
-      <div class="counter">
-        <button id="minus" class="btn btn-ghost" aria-label="Csökkentés">−</button>
-        <span id="count" aria-live="polite">0</span>
-        <button id="plus" class="btn btn-ghost" aria-label="Növelés">+</button>
+    <!-- A padelről -->
+    <section class="section section-dark" id="padel">
+      <div class="container two-col">
+        <div>
+          <p class="eyebrow">A padelről</p>
+          <h2>Mi az a padel?</h2>
+          <p>A padel ütős sport, amely a <b>tenisz</b> és a <b>squash</b> legjobb részeit ötvözi. Mindig <b>párosban</b>, két kettes csapat játssza egy 20×10 méteres, üvegfalakkal és dróthálóval körbezárt pályán.</p>
+          <p>A sportág 1969-ben Mexikóban született, Spanyolországban vált igazán népszerűvé, ma pedig a világ egyik leggyorsabban növekvő sportja – Magyarországon is egyre többen szeretnek bele.</p>
+          <p>A titka egyszerű: <b>könnyű megtanulni</b>, már az első órán élvezetes labdamenetek alakulnak ki, és közben remek társasági program.</p>
+        </div>
+        <div class="feature-list">
+          <div class="feature">
+            <div class="feature-icon">🎾</div>
+            <div>
+              <h3>Rövid, tömör ütő</h3>
+              <p>A padelütő húrok nélküli, lyuggatott, habtöltésű ütő. Rövidebb a teniszütőnél, így könnyebb irányítani.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">🧱</div>
+            <div>
+              <h3>A fal is játszik</h3>
+              <p>A labda a falakról visszapattanva is játékban marad – ettől lesznek hosszúak és látványosak a labdamenetek.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">👥</div>
+            <div>
+              <h3>Mindig 2 a 2 ellen</h3>
+              <p>Négyen játszotok, ezért a padel igazi csapatsport – a jó kommunikáció legalább annyit ér, mint egy nagy ütés.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <div>
+              <h3>Bárkinek megy</h3>
+              <p>Nem kell hozzá teniszmúlt. A kis pálya és az alulról adogatás miatt kortól és edzettségtől függetlenül élvezhető.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <p class="muted" id="clock"></p>
     </section>
+
+    <!-- Hogyan működik -->
+    <section class="section" id="mukodes">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Működés</p>
+          <h2>Így zajlik egy játék</h2>
+        </div>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Négyen, két térfélen</h3>
+            <p>A pályát háló osztja két részre. Mindkét térfélen egy-egy kétfős csapat áll.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Alulról adogatás</h3>
+            <p>A játék adogatással indul: a labdát egyet pattintod, majd derékmagasság alatt, átlósan ütöd át.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Pattanás, fal, ütés</h3>
+            <p>A labda a saját térfeleden egyszer pattanhat a földön, utána a falról is visszajöhet – akkor is visszaütheted.</p>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <h3>Pontszámítás, mint a teniszben</h3>
+            <p>15 – 30 – 40 – játék. Hat nyert játék egy szett, általában két nyert szett a győzelem.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Szabályok -->
+    <section class="section section-soft" id="szabalyok">
+      <div class="container narrow">
+        <div class="section-head">
+          <p class="eyebrow">Szabályok</p>
+          <h2>A legfontosabb szabályok röviden</h2>
+          <p>Nem kell mindent fejből tudni az első játékhoz – ezekkel az alapokkal már bátran beállhatsz.</p>
+        </div>
+
+        <div class="rules">
+          <details open>
+            <summary>Adogatás</summary>
+            <ul>
+              <li>Az adogató az alapvonal mögött áll, a labdát egyszer a földre pattintja, majd <b>derékmagasságban vagy az alatt</b> üti meg.</li>
+              <li>A labdának <b>átlósan</b>, az ellenfél adogatófelébe kell érkeznie.</li>
+              <li>Két próbálkozás jár: ha az első hibás, jöhet a második.</li>
+              <li>Ha az adogatott labda a pattanás után a <b>dróthálót</b> éri, az hiba; ha az <b>üvegfalat</b>, az szabályos.</li>
+              <li>Ha a labda a hálót érinti, majd a jó mezőbe esik, az adogatást meg kell ismételni.</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>A labda útja</summary>
+            <ul>
+              <li>A labda a saját térfeleden <b>legfeljebb egyszer</b> pattanhat a földön.</li>
+              <li>Pattanás után a labda falat érhet, és utána is visszaütheted.</li>
+              <li>Röptézni (pattanás előtt visszaütni) szabad – kivéve az adogatás fogadásakor.</li>
+              <li>Az átütött labdának először az <b>ellenfél talaját</b> kell érintenie; ha előbb a falat vagy a hálót találja el, elveszíted a pontot.</li>
+              <li>Saját falad felhasználható: a labdát a saját falad felé is ütheted, hogy onnan pattanjon át az ellenfélhez.</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>Pontszámítás</summary>
+            <ul>
+              <li>A számolás a teniszből ismert: <b>15 – 30 – 40 – játék</b>.</li>
+              <li>40–40-nél (egyenlő) két pont különbséggel lehet nyerni – vagy sok helyen a gyorsabb <b>„arany pont”</b> dönt: aki a következő pontot nyeri, viszi a játékot.</li>
+              <li>Egy szettet az nyer, aki előbb nyer 6 játékot legalább 2 különbséggel; 6–6-nál rövidítés (tie-break) jön.</li>
+              <li>A meccs jellemzően <b>két nyert szettig</b> tart.</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>Mikor veszíted el a pontot?</summary>
+            <ul>
+              <li>A labda kétszer pattan a térfeleden.</li>
+              <li>Az ütésed a hálóba megy, vagy előbb a falat éri, mint az ellenfél talaját.</li>
+              <li>A labda a te ütésed után közvetlenül a pályán kívülre repül.</li>
+              <li>Hozzáérsz a hálóhoz – testtel vagy ütővel –, vagy átnyúlsz az ellenfél térfelére.</li>
+              <li>A labda hozzád vagy a társadhoz ér.</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>Illem a pályán</summary>
+            <ul>
+              <li>Csak tiszta talpú, sima vagy „halszálkás” talpú sportcipőben lépj a pályára.</li>
+              <li>A foglalt idősáv végén hagyd időben szabadon a pályát a következő csapatnak.</li>
+              <li>Meccs előtt és után illik kezet fogni (vagy ütőt összeérinteni) az ellenféllel.</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Árak -->
+    <section class="section" id="arak">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Árak</p>
+          <h2>Egyszerű, átlátható árak</h2>
+          <p>Az árak egy pályára, egy órára vonatkoznak – a négy játékos között szépen eloszlik.</p>
+        </div>
+        <div class="prices">
+          <div class="price-card">
+            <h3>Délelőtt</h3>
+            <p class="price-time">Hétköznap 7:00–16:00</p>
+            <p class="price"><strong>8 000</strong> Ft / óra</p>
+            <p class="price-note">kb. 2 000 Ft / fő</p>
+          </div>
+          <div class="price-card featured">
+            <span class="badge">Legnépszerűbb</span>
+            <h3>Csúcsidő</h3>
+            <p class="price-time">Hétköznap 16:00–22:00</p>
+            <p class="price"><strong>12 000</strong> Ft / óra</p>
+            <p class="price-note">kb. 3 000 Ft / fő</p>
+          </div>
+          <div class="price-card">
+            <h3>Hétvége</h3>
+            <p class="price-time">Szombat–vasárnap 8:00–22:00</p>
+            <p class="price"><strong>10 000</strong> Ft / óra</p>
+            <p class="price-note">kb. 2 500 Ft / fő</p>
+          </div>
+        </div>
+        <p class="extras">Ütőbérlés: 1 000 Ft / db · Labda (3 db): 2 500 Ft · Kezdő edzés edzővel: érdeklődj!</p>
+      </div>
+    </section>
+
+    <!-- Foglalás -->
+    <section class="section section-dark" id="foglalas">
+      <div class="container narrow">
+        <div class="section-head">
+          <p class="eyebrow">Foglalás</p>
+          <h2>Foglalj pályát</h2>
+          <p>Válassz pályát, napot és időpontot – mi visszaigazoljuk a foglalásodat.</p>
+        </div>
+
+        <form class="booking" id="booking" novalidate>
+          <fieldset class="court-picker">
+            <legend>Pálya</legend>
+            <label class="court-option" style="--court: var(--red)">
+              <input type="radio" name="court" value="piros" checked>
+              <span>Piros</span>
+            </label>
+            <label class="court-option" style="--court: var(--green)">
+              <input type="radio" name="court" value="zöld">
+              <span>Zöld</span>
+            </label>
+            <label class="court-option" style="--court: var(--purple)">
+              <input type="radio" name="court" value="lila">
+              <span>Lila</span>
+            </label>
+          </fieldset>
+
+          <div class="form-row">
+            <label>Dátum
+              <input type="date" name="date" id="date" required>
+            </label>
+            <label>Kezdés
+              <select name="time" id="time" required></select>
+            </label>
+            <label>Időtartam
+              <select name="duration">
+                <option value="60">1 óra</option>
+                <option value="90" selected>1,5 óra</option>
+                <option value="120">2 óra</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label>Név
+              <input type="text" name="name" autocomplete="name" placeholder="Kovács Anna" required>
+            </label>
+            <label>Telefonszám
+              <input type="tel" name="phone" autocomplete="tel" placeholder="+36 30 123 4567" required>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-ball btn-block">Foglalás elküldése</button>
+          <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Kapcsolat -->
+    <section class="section" id="kapcsolat">
+      <div class="container contact">
+        <div>
+          <p class="eyebrow">Kapcsolat</p>
+          <h2>Várunk a pályán!</h2>
+          <p>Kérdésed van, csapatépítőt vagy bajnokságot szerveznél? Írj vagy hívj minket bátran.</p>
+          <ul class="contact-list">
+            <li><span>📍</span> Budapest</li>
+            <li><span>📞</span> <a href="tel:+3612345678">+36 1 234 5678</a></li>
+            <li><span>✉️</span> <a href="mailto:info@playpadel.hu">info@playpadel.hu</a></li>
+          </ul>
+        </div>
+        <div class="hours">
+          <h3>Nyitvatartás</h3>
+          <dl>
+            <dt>Hétfő – Péntek</dt><dd>7:00 – 22:00</dd>
+            <dt>Szombat – Vasárnap</dt><dd>8:00 – 22:00</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="footer">
-    <p>Készült kipróbálás céljából · <span id="year"></span></p>
+    <div class="container footer-inner">
+      <a href="#top" class="logo">
+        <svg class="logo-ball" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="44"/>
+          <path d="M14 38c22 8 50 8 72 0M14 62c22-8 50-8 72 0"/>
+        </svg>
+        <span>Play<strong>Padel</strong></span>
+      </a>
+      <div class="footer-dots" aria-hidden="true"><i class="d-red"></i><i class="d-green"></i><i class="d-purple"></i></div>
+      <p>© <span id="year"></span> Play Padel Budapest</p>
+    </div>
   </footer>
 
   <script src="script.js"></script>

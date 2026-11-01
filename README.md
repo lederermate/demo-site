@@ -1,10 +1,15 @@
-# Demo weboldal
+# Play Padel – weboldal
 
-Egyszerű statikus demo oldal (HTML + CSS + JS), GitHub Pages-en publikálva.
+Statikus weboldal (HTML + CSS + JS) a budapesti Play Padel számára, három pályával
+(piros, zöld, lila). GitHub Pages-en publikálva: https://lederermate.github.io/demo-site/
+
+## Tartalom
+
+- Pályák bemutatása
+- A padelről, működés, szabályok
+- Árak, foglalási űrlap (demo – nem küld adatot sehová), kapcsolat
 
 ## Helyi futtatás
-
-Nyisd meg az `index.html`-t böngészőben, vagy:
 
 ```bash
 python3 -m http.server 8000
@@ -12,7 +17,6 @@ python3 -m http.server 8000
 
 majd: http://localhost:8000
 
-## Publikálás
+## Megjegyzés
 
-A `main` ágra pusholt változások automatikusan kikerülnek a GitHub Pages oldalra
-(Settings → Pages → Deploy from a branch → `main` / `root`).
+A cím, telefonszám, e-mail, nyitvatartás és árak minta adatok – élesítés előtt cserélendők.
