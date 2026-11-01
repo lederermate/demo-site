@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo oldal</title>
+  <meta name="description" content="Egyszerű demo weboldal GitHub Pages-en.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav">
+      <span class="logo">◆ Demo</span>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Téma váltása">🌙</button>
+    </nav>
+    <div class="hero-content">
+      <h1>Helló, világ! 👋</h1>
+      <p>Ez egy demo weboldal, ami a GitHubról fut, és bárhonnan elérhető az interneten.</p>
+      <a href="#funkciok" class="btn">Nézzünk körül</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="funkciok" class="section">
+      <h2>Mit tud ez az oldal?</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="icon">⚡</div>
+          <h3>Gyors</h3>
+          <p>Statikus HTML és CSS, nincs szerver, nincs adatbázis – azonnal betölt.</p>
+        </article>
+        <article class="card">
+          <div class="icon">🌍</div>
+          <h3>Publikus</h3>
+          <p>A GitHub Pages ingyenesen kiszolgálja, HTTPS-sel együtt.</p>
+        </article>
+        <article class="card">
+          <div class="icon">🔄</div>
+          <h3>Automatikus</h3>
+          <p>Minden <code>git push</code> után pár percen belül frissül az élő oldal.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Kis interaktív próba</h2>
+      <div class="counter">
+        <button id="minus" class="btn btn-ghost" aria-label="Csökkentés">−</button>
+        <span id="count" aria-live="polite">0</span>
+        <button id="plus" class="btn btn-ghost" aria-label="Növelés">+</button>
+      </div>
+      <p class="muted" id="clock"></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Készült kipróbálás céljából · <span id="year"></span></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
