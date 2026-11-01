@@ -73,16 +73,7 @@
         p_minutes: b.minutes, p_name: b.name, p_phone: b.phone,
         p_email: b.email, p_privacy_version: b.privacyVersion,
       };
-      try {
-        await this.rpc('create_booking', args);
-      } catch (e) {
-        // Átmeneti: amíg az adatbázisban a régi (e-mail és tájékoztató paraméter nélküli)
-        // függvény fut, arra esünk vissza. A schema.sql újrafuttatása után törölhető.
-        if (e.code !== 'PGRST202') throw e;
-        delete args.p_email;
-        delete args.p_privacy_version;
-        await this.rpc('create_booking', args);
-      }
+      await this.rpc('create_booking', args);
     },
   };
 
