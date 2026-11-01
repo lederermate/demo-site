@@ -28,6 +28,7 @@
       </button>
       <nav class="menu" id="menu">
         <a href="#palyak">Pályák</a>
+        <a href="#galeria">Galéria</a>
         <a href="#padel">A padelről</a>
         <a href="#szabalyok">Szabályok</a>
         <a href="#arak">Árak</a>
@@ -93,7 +94,7 @@
         </div>
         <div class="courts">
           <article class="court-card" style="--court: var(--red)">
-            <svg class="court" viewBox="0 0 200 100" aria-hidden="true"><use href="#court-lines"/></svg>
+            <img class="court-photo" src="images/palya-piros-attekintes.jpg" alt="Piros padelpálya felülnézetből, esti világításban" width="1600" height="1000" loading="lazy">
             <div class="court-card-body">
               <span class="tag">1-es pálya</span>
               <h3>Piros pálya</h3>
@@ -102,16 +103,16 @@
             </div>
           </article>
           <article class="court-card" style="--court: var(--green)">
-            <svg class="court" viewBox="0 0 200 100" aria-hidden="true"><use href="#court-lines"/></svg>
+            <img class="court-photo" src="images/palya-zold-attekintes.jpg" alt="Zöld padelpálya felülnézetből, esti világításban" width="1600" height="1000" loading="lazy">
             <div class="court-card-body">
               <span class="tag">2-es pálya</span>
               <h3>Zöld pálya</h3>
               <p>A klasszikus. Ideális első alkalomra, edzésre és nyugodt, hosszú labdameneteket kedvelőknek.</p>
-              <a href="#foglalas" class="link" data-court="zöld">Ezt foglalom →</a>
+              <a href="#foglalas" class="link" data-court="zold">Ezt foglalom →</a>
             </div>
           </article>
           <article class="court-card" style="--court: var(--purple)">
-            <svg class="court" viewBox="0 0 200 100" aria-hidden="true"><use href="#court-lines"/></svg>
+            <img class="court-photo" src="images/palya-lila-attekintes.jpg" alt="Lila padelpálya felülnézetből, esti világításban" width="1600" height="1000" loading="lazy">
             <div class="court-card-body">
               <span class="tag">3-as pálya</span>
               <h3>Lila pálya</h3>
@@ -121,6 +122,29 @@
           </article>
         </div>
       </div>
+    </section>
+
+    <!-- Galéria -->
+    <section class="section section-soft" id="galeria">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Galéria</p>
+          <h2>Nézz körül nálunk</h2>
+          <p>Látványtervek a pályáinkról – esti világításban, üvegfalakkal, ahogy játék közben látod őket.</p>
+        </div>
+        <div class="gallery">
+          <figure><button type="button" data-full="images/palya-piros-attekintes.jpg"><img src="images/palya-piros-attekintes.jpg" alt="Piros pálya áttekintő nézet" loading="lazy" width="1600" height="1000"></button><figcaption>Piros pálya</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-zold-halo.jpg"><img src="images/palya-zold-halo.jpg" alt="Zöld pálya az alapvonal mögül" loading="lazy" width="1600" height="1000"></button><figcaption>Zöld pálya – az alapvonalról</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-lila-attekintes.jpg"><img src="images/palya-lila-attekintes.jpg" alt="Lila pálya áttekintő nézet" loading="lazy" width="1600" height="1000"></button><figcaption>Lila pálya</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-piros-halo.jpg"><img src="images/palya-piros-halo.jpg" alt="Piros pálya az alapvonal mögül" loading="lazy" width="1600" height="1000"></button><figcaption>Piros pálya – az alapvonalról</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-zold-attekintes.jpg"><img src="images/palya-zold-attekintes.jpg" alt="Zöld pálya áttekintő nézet" loading="lazy" width="1600" height="1000"></button><figcaption>Zöld pálya</figcaption></figure>
+          <figure><button type="button" data-full="images/palya-lila-halo.jpg"><img src="images/palya-lila-halo.jpg" alt="Lila pálya az alapvonal mögül" loading="lazy" width="1600" height="1000"></button><figcaption>Lila pálya – az alapvonalról</figcaption></figure>
+        </div>
+      </div>
+      <dialog class="lightbox" id="lightbox">
+        <button type="button" class="lightbox-close" aria-label="Bezárás">×</button>
+        <img src="" alt="">
+      </dialog>
     </section>
 
     <!-- A padelről -->
@@ -298,58 +322,50 @@
 
     <!-- Foglalás -->
     <section class="section section-dark" id="foglalas">
-      <div class="container narrow">
+      <div class="container">
         <div class="section-head">
           <p class="eyebrow">Foglalás</p>
           <h2>Foglalj pályát</h2>
-          <p>Válassz pályát, napot és időpontot – mi visszaigazoljuk a foglalásodat.</p>
+          <p>Válassz napot, majd kattints egy szabad időpontra a kívánt pálya oszlopában.</p>
+          <p class="mode-badge" id="mode-badge" hidden></p>
         </div>
 
-        <form class="booking" id="booking" novalidate>
-          <fieldset class="court-picker">
-            <legend>Pálya</legend>
-            <label class="court-option" style="--court: var(--red)">
-              <input type="radio" name="court" value="piros" checked>
-              <span>Piros</span>
-            </label>
-            <label class="court-option" style="--court: var(--green)">
-              <input type="radio" name="court" value="zöld">
-              <span>Zöld</span>
-            </label>
-            <label class="court-option" style="--court: var(--purple)">
-              <input type="radio" name="court" value="lila">
-              <span>Lila</span>
-            </label>
-          </fieldset>
-
-          <div class="form-row">
-            <label>Dátum
-              <input type="date" name="date" id="date" required>
-            </label>
-            <label>Kezdés
-              <select name="time" id="time" required></select>
-            </label>
-            <label>Időtartam
-              <select name="duration">
-                <option value="60">1 óra</option>
-                <option value="90" selected>1,5 óra</option>
-                <option value="120">2 óra</option>
-              </select>
-            </label>
+        <div class="booking-layout">
+          <div class="calendar">
+            <div class="date-strip" id="date-strip" aria-label="Nap kiválasztása"></div>
+            <div class="legend" aria-hidden="true">
+              <span><i class="lg-free"></i>Szabad</span>
+              <span><i class="lg-busy"></i>Foglalt</span>
+              <span><i class="lg-sel"></i>Kiválasztva</span>
+            </div>
+            <div class="slot-grid-wrap">
+              <div class="slot-grid" id="slot-grid"></div>
+            </div>
           </div>
 
-          <div class="form-row">
+          <form class="booking" id="booking" novalidate>
+            <h3>Foglalás részletei</h3>
+
+            <fieldset class="duration-picker">
+              <legend>Időtartam</legend>
+              <label><input type="radio" name="duration" value="60"><span>1 óra</span></label>
+              <label><input type="radio" name="duration" value="90" checked><span>1,5 óra</span></label>
+              <label><input type="radio" name="duration" value="120"><span>2 óra</span></label>
+            </fieldset>
+
+            <div class="summary" id="summary" aria-live="polite"></div>
+
             <label>Név
               <input type="text" name="name" autocomplete="name" placeholder="Kovács Anna" required>
             </label>
             <label>Telefonszám
               <input type="tel" name="phone" autocomplete="tel" placeholder="+36 30 123 4567" required>
             </label>
-          </div>
 
-          <button type="submit" class="btn btn-ball btn-block">Foglalás elküldése</button>
-          <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
-        </form>
+            <button type="submit" class="btn btn-ball btn-block" id="submit-btn" disabled>Foglalás elküldése</button>
+            <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -392,6 +408,8 @@
     </div>
   </footer>
 
+  <script src="config.js"></script>
+  <script src="booking.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

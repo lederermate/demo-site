@@ -335,60 +335,178 @@ a { color: inherit; }
 }
 .extras { text-align: center; color: var(--muted); margin-top: 2.2rem; }
 
+/* Galéria */
+.court-photo { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-bottom: 1px solid var(--border); }
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.gallery figure { margin: 0; }
+.gallery button { display: block; width: 100%; padding: 0; border: 0; border-radius: 14px; overflow: hidden; cursor: zoom-in; background: var(--ink); }
+.gallery img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; transition: transform .35s, opacity .2s; }
+.gallery button:hover img { transform: scale(1.04); }
+.gallery button:focus-visible { outline: 3px solid var(--purple); outline-offset: 3px; }
+.gallery figcaption { font-size: .9rem; color: var(--muted); margin-top: .5rem; }
+
+.lightbox { padding: 0; border: 0; background: transparent; max-width: min(1200px, 94vw); }
+.lightbox::backdrop { background: rgba(8, 10, 18, .85); }
+.lightbox img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.lightbox-close {
+  position: absolute; top: .6rem; right: .6rem;
+  width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 0;
+  background: rgba(15,20,36,.75); color: #fff; font-size: 1.5rem; cursor: pointer;
+}
+
 /* Foglalás */
+.mode-badge {
+  display: inline-block;
+  margin-top: .4rem;
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  background: rgba(215, 243, 74, .12);
+  border: 1px solid rgba(215, 243, 74, .35);
+  color: var(--ball) !important;
+  font-size: .85rem;
+}
+.mode-badge[hidden] { display: none; }
+
+.booking-layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr); gap: 1.5rem; align-items: start; }
+
+.calendar {
+  background: var(--ink-2);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 22px;
+  padding: 1.2rem;
+  min-width: 0;
+}
+
+.date-strip { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .6rem; scrollbar-width: thin; }
+.day {
+  flex: 0 0 auto;
+  width: 64px;
+  display: grid;
+  justify-items: center;
+  gap: .1rem;
+  padding: .55rem 0;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: transparent;
+  color: rgba(255,255,255,.8);
+  font: inherit;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.day:hover { border-color: rgba(255,255,255,.3); }
+.day-name { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; }
+.day-num { font-family: "Archivo", sans-serif; font-size: 1.3rem; font-weight: 800; color: #fff; line-height: 1.1; }
+.day-month { font-size: .72rem; opacity: .7; }
+.day.weekend .day-name { color: var(--ball); }
+.day.active { background: var(--ball); border-color: var(--ball); }
+.day.active, .day.active .day-num, .day.active .day-name { color: var(--ink); }
+
+.legend { display: flex; gap: 1.2rem; flex-wrap: wrap; font-size: .82rem; color: rgba(255,255,255,.65); margin: .6rem 0 .8rem; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: .4rem; vertical-align: -1px; }
+.lg-free { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.2); }
+.lg-busy { background: repeating-linear-gradient(45deg, rgba(255,255,255,.18) 0 3px, rgba(255,255,255,.05) 3px 6px); }
+.lg-sel { background: var(--ball); }
+
+.slot-grid-wrap { max-height: 560px; overflow-y: auto; border-radius: 12px; scrollbar-width: thin; }
+.slot-grid {
+  display: grid;
+  grid-template-columns: 52px repeat(3, minmax(0, 1fr));
+  gap: 3px;
+  transition: opacity .2s;
+}
+.slot-grid.loading { opacity: .4; pointer-events: none; }
+
+.cell { font-size: .8rem; min-height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 6px; }
+.cell.head {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--ink-2);
+  font-weight: 600; color: #fff; min-height: 38px; gap: .4rem;
+  transition: background .3s;
+}
+.cell.head i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.cell.head.focus { background: rgba(215,243,74,.18); }
+.court-piros { --court: var(--red); }
+.court-zold  { --court: var(--green); }
+.court-lila  { --court: var(--purple); }
+.cell.head i, .sum-court i { background: var(--court); }
+
+.cell.time { color: rgba(255,255,255,.45); justify-content: flex-end; padding-right: .4rem; font-variant-numeric: tabular-nums; }
+.cell.time.full-hour { color: rgba(255,255,255,.85); font-weight: 600; }
+
+.cell.slot { border: 0; font: inherit; font-size: .78rem; padding: 0 .3rem; color: rgba(255,255,255,.7); white-space: nowrap; overflow: hidden; }
+.cell.slot.free { background: rgba(255,255,255,.06); cursor: pointer; box-shadow: inset 3px 0 0 color-mix(in srgb, var(--court) 70%, transparent); }
+.cell.slot.free:hover { background: color-mix(in srgb, var(--court) 40%, transparent); color: #fff; }
+.cell.slot.free:hover::after { content: "+"; font-weight: 700; }
+.cell.slot.free:focus-visible { outline: 2px solid var(--ball); outline-offset: -2px; }
+.cell.slot.busy { background: repeating-linear-gradient(45deg, rgba(255,255,255,.12) 0 4px, rgba(255,255,255,.04) 4px 8px); color: rgba(255,255,255,.55); cursor: not-allowed; }
+.cell.slot.past { background: rgba(255,255,255,.02); cursor: not-allowed; }
+.cell.slot.sel { background: var(--ball); color: var(--ink); font-weight: 700; box-shadow: none; }
+.cell.slot.sel:hover::after { content: none; }
+
 .booking {
   background: var(--ink-2);
   border: 1px solid rgba(255,255,255,.08);
   border-radius: 22px;
-  padding: 2rem;
+  padding: 1.5rem;
   display: grid;
-  gap: 1.3rem;
+  gap: 1rem;
+  position: sticky;
+  top: 84px;
 }
-.court-picker { border: 0; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
-.court-picker legend { font-weight: 600; margin-bottom: .6rem; font-size: .9rem; color: rgba(255,255,255,.75); }
-.court-option { position: relative; cursor: pointer; }
-.court-option input { position: absolute; opacity: 0; pointer-events: none; }
-.court-option span {
-  display: block;
-  text-align: center;
-  padding: .9rem .5rem;
-  border-radius: 12px;
-  border: 2px solid rgba(255,255,255,.12);
-  font-weight: 600;
-  transition: all .15s;
-  position: relative;
-}
-.court-option span::before {
-  content: "";
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--court);
-  margin-right: .5rem;
-  vertical-align: -1px;
-}
-.court-option input:checked + span { border-color: var(--court); background: color-mix(in srgb, var(--court) 22%, transparent); }
-.court-option input:focus-visible + span { outline: 2px solid var(--ball); outline-offset: 2px; }
+.booking h3 { margin: 0; }
 
-.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; }
-.booking label { display: grid; gap: .4rem; font-size: .9rem; font-weight: 600; color: rgba(255,255,255,.75); }
-.booking input, .booking select {
-  font: inherit;
-  font-weight: 400;
-  color: #fff;
-  background: var(--ink);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 10px;
-  padding: .75rem .85rem;
-  width: 100%;
-  color-scheme: dark;
+.duration-picker { border: 0; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+.duration-picker legend { font-size: .9rem; font-weight: 600; color: rgba(255,255,255,.75); margin-bottom: .45rem; }
+.duration-picker label { display: block; cursor: pointer; }
+.duration-picker input { position: absolute; opacity: 0; pointer-events: none; }
+.duration-picker span {
+  display: block; text-align: center; padding: .6rem .3rem; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.15); font-weight: 600; font-size: .9rem; color: #fff;
 }
-.booking input:focus, .booking select:focus { outline: 2px solid var(--ball); outline-offset: 1px; border-color: transparent; }
+.duration-picker input:checked + span { background: rgba(215,243,74,.15); border-color: var(--ball); color: var(--ball); }
+.duration-picker input:focus-visible + span { outline: 2px solid var(--ball); outline-offset: 2px; }
+
+.summary {
+  background: var(--ink);
+  border-radius: 12px;
+  padding: 1rem;
+  min-height: 92px;
+  display: grid;
+  gap: .35rem;
+  align-content: center;
+  font-size: .95rem;
+  color: rgba(255,255,255,.85);
+}
+.sum-court { font-weight: 700; color: #fff; display: flex; align-items: center; gap: .5rem; }
+.sum-court i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.sum-when strong { color: #fff; font-size: 1.15rem; }
+.sum-price strong { color: var(--ball); }
+.muted-light { color: rgba(255,255,255,.55); }
+
+.booking label { display: grid; gap: .4rem; font-size: .9rem; font-weight: 600; color: rgba(255,255,255,.75); }
+.booking input[type="text"], .booking input[type="tel"] {
+  font: inherit; font-weight: 400; color: #fff; background: var(--ink);
+  border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: .75rem .85rem; width: 100%;
+}
+.booking input:focus { outline: 2px solid var(--ball); outline-offset: 1px; border-color: transparent; }
 .booking input.invalid { border-color: var(--red); }
-.form-msg { margin: 0; min-height: 1.5em; text-align: center; font-weight: 500; }
+.booking .btn[disabled] { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
+.form-msg { margin: 0; min-height: 1.5em; font-weight: 500; font-size: .92rem; }
+.form-msg:empty { display: none; }
 .form-msg.ok { color: var(--ball); }
 .form-msg.err { color: #ff8a8d; }
+
+@media (max-width: 960px) {
+  .booking-layout { grid-template-columns: 1fr; }
+  .booking { position: static; }
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .calendar { padding: .8rem; }
+  .slot-grid { grid-template-columns: 44px repeat(3, minmax(0, 1fr)); }
+  .slot-grid-wrap { max-height: 440px; }
+  .gallery { grid-template-columns: 1fr; }
+}
 
 /* Kapcsolat */
 .contact { display: grid; grid-template-columns: 1.3fr 1fr; gap: 3rem; align-items: center; }
@@ -446,8 +564,6 @@ a { color: inherit; }
   .hero { padding: 3rem 0 3.5rem; }
   .hero-visual { height: 230px; }
   .steps { grid-template-columns: 1fr; }
-  .booking { padding: 1.3rem; }
-  .court-picker { gap: .5rem; }
   .footer-inner { justify-content: center; text-align: center; }
 }
 

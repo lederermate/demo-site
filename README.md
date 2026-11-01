@@ -5,9 +5,43 @@ Statikus weboldal (HTML + CSS + JS) a budapesti Play Padel számára, három pá
 
 ## Tartalom
 
-- Pályák bemutatása
-- A padelről, működés, szabályok
-- Árak, foglalási űrlap (demo – nem küld adatot sehová), kapcsolat
+- Pályák bemutatása, galéria (3D látványtervek az `images/` mappában)
+- A padelről, működés, szabályok, árak, kapcsolat
+- **Foglaltsági naptár + foglalás** (Supabase adatbázissal vagy demó módban)
+
+## Fájlok
+
+| Fájl | Mire való |
+| --- | --- |
+| `index.html`, `style.css`, `script.js` | az oldal |
+| `booking.js` | foglaltsági naptár és foglalás |
+| `config.js` | Supabase elérés (üresen = demó mód) |
+| `supabase/schema.sql` | adatbázis séma, ütközésvédelem, jogosultságok |
+
+## Foglalási rendszer beüzemelése (Supabase)
+
+1. Regisztrálj / lépj be: https://supabase.com → **New project**
+   (régió: *Central EU (Frankfurt)*, az ingyenes csomag elég).
+2. **SQL Editor → New query**: másold be a `supabase/schema.sql` tartalmát → **Run**.
+3. **Project Settings → API Keys**: másold ki a projekt URL-t és a
+   **publishable** (vagy régi *anon*) kulcsot.
+4. Írd be őket a `config.js`-be, majd push → pár perc múlva élesben működik.
+
+> A publishable/anon kulcs nyilvános, böngészőbe szánt kulcs. A **secret /
+> service_role** kulcsot soha ne tedd a weboldalba!
+
+### Hogyan véd az adatbázis?
+
+- **Ütközés:** egy `EXCLUDE` megkötés garantálja, hogy egy pályára egy időben
+  csak egy érvényes foglalás létezhet – akkor is, ha ketten egyszerre kattintanak.
+- **Adatvédelem:** a `bookings` tábla a böngészőből nem olvasható és nem írható.
+  Az oldal csak két függvényt hívhat:
+  - `get_busy_slots(dátum)` – csak pálya + időpont, név/telefonszám nélkül
+  - `create_booking(...)` – ellenőrzi a nyitvatartást, a fél órás kezdést,
+    az időtartamot (1 / 1,5 / 2 óra), hogy a jövőbe essen (max. 60 nap), és
+    telefonszámonként legfeljebb 3 aktív foglalást enged.
+- **Lemondás:** a Supabase *Table Editorban* a foglalás `status` mezőjét
+  `cancelled`-re állítva az időpont azonnal újra szabad lesz.
 
 ## Helyi futtatás
 
@@ -20,3 +54,4 @@ majd: http://localhost:8000
 ## Megjegyzés
 
 A cím, telefonszám, e-mail, nyitvatartás és árak minta adatok – élesítés előtt cserélendők.
+Éles használat előtt adatkezelési tájékoztató szükséges (név és telefonszám tárolása).
