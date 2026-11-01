@@ -112,7 +112,7 @@ Hibakeresés: **Edge Functions → foglalas-ertesito → Logs** – minden lép�
 
 ## AI asszisztens (chat)
 
-A bal alsó sarokban lévő chat a Claude API-val (`claude-opus-5-5`, `low` effort) válaszol a
+A bal alsó sarokban lévő chat a Claude API-val (`claude-haiku-5-5`, `medium` effort) válaszol a
 padel szabályaival és a Play Padellel kapcsolatos kérdésekre (tesztadatok a függvény
 tudásbázisában), és segít foglalni: a `get_availability` eszközzel lekérdezi a szabad
 időpontokat, a `prepare_booking` eszközzel kijelöli az időpontot a foglalási naptárban.
@@ -122,8 +122,8 @@ látogató adja meg az űrlapon.
 - A beszélgetést csak a böngésző tárolja (sessionStorage), a szerver nem menti.
 - Visszaélés ellen: napi üzenetkorlát IP-nként (40) és összesen (1000) – hash-elt kulccsal,
   `chat_rate_limits` tábla, 2 nap után törlődik.
-- Ha a modell biztonsági okból elutasítana egy kérést, a `fallbacks: "default"` beállítás
-  miatt a szerver egy ajánlott tartalék modellen futtatja újra.
+- Ha a modell biztonsági okból elutasít egy kérést (`stop_reason: "refusal"`), a chat udvarias
+  általános választ ad. Haiku 5.5-höz nincs szerveroldali tartalék modell.
 
 ### Beüzemelés
 
@@ -135,7 +135,8 @@ látogató adja meg az űrlapon.
 4. **Edge Functions → Secrets**: `ANTHROPIC_API_KEY` = az API kulcs.
    Opcionális: `CHAT_ALLOWED_ORIGINS`, `CHAT_DAILY_LIMIT_PER_IP`, `CHAT_DAILY_LIMIT_TOTAL`.
 
-Költség: üzenetenként jellemzően 1–3 cent (a rendszerprompt gyorsítótárazva van).
+Költség: üzenetenként jellemzően 0,1–0,3 cent (Haiku 5.5: $0.10 / $0.50 per millió token,
+a rendszerprompt gyorsítótárazva van).
 Napló: **Edge Functions → chatbot → Logs** (`[chatbot] kör …` sorok tokenszámokkal).
 
 ## Helyi futtatás
