@@ -14,6 +14,10 @@
 --   * Az ütközést maga az adatbázis zárja ki (EXCLUDE megkötés): egy
 --     pályára egy időben akkor sem kerülhet két foglalás, ha két ember
 --     ugyanabban a pillanatban kattint.
+--   * Foglalás csak az adatkezelési tájékoztató elfogadásával jöhet létre;
+--     az elfogadott verzió és időpont foglalásonként rögzítésre kerül.
+--   * Adatmegőrzés: a lejárt foglalások 90 nap után automatikusan törlődnek
+--     (pg_cron, a fájl végén) – összhangban az adatvedelem.html-lel.
 -- =====================================================================
 
 create extension if not exists btree_gist;
@@ -27,6 +31,8 @@ create table if not exists public.bookings (
   phone       text        not null check (phone ~ '^\+?[0-9 ()/-]{7,20}$'),
   status      text        not null default 'confirmed' check (status in ('confirmed', 'cancelled')),
   created_at  timestamptz not null default now(),
+  privacy_version     text,
+  privacy_accepted_at timestamptz,
   constraint bookings_time_order check (end_at > start_at),
   -- Egy pályán ne lehessen két, időben átfedő érvényes foglalás.
   constraint bookings_no_overlap exclude using gist (
@@ -36,6 +42,10 @@ create table if not exists public.bookings (
 );
 
 create index if not exists bookings_start_idx on public.bookings (start_at);
+
+-- Korábbi telepítés frissítése: új oszlopok az adatkezelési tájékoztató elfogadásához
+alter table public.bookings add column if not exists privacy_version text;
+alter table public.bookings add column if not exists privacy_accepted_at timestamptz;
 
 alter table public.bookings enable row level security;
 revoke all on public.bookings from anon, authenticated;
@@ -65,6 +75,11 @@ $$;
 
 -- ---------------------------------------------------------------------
 -- Foglalás létrehozása ellenőrzésekkel.
+-- (A régi, tájékoztató-paraméter nélküli változatot eltávolítjuk.)
+-- ---------------------------------------------------------------------
+drop function if exists public.create_booking(text, date, time, int, text, text);
+
+-- ---------------------------------------------------------------------
 -- Hibakódok (a PostgREST HTTP státuszként adja vissza):
 --   PT400 → 400 hibás adat,  PT409 → 409 az időpont már foglalt
 -- ---------------------------------------------------------------------
@@ -74,7 +89,8 @@ create or replace function public.create_booking(
   p_start   time,
   p_minutes int,
   p_name    text,
-  p_phone   text
+  p_phone   text,
+  p_privacy_version text
 )
 returns bigint
 language plpgsql
@@ -93,6 +109,10 @@ declare
   v_digits    text := regexp_replace(btrim(p_phone), '[^0-9]', '', 'g');
   v_id        bigint;
 begin
+  if p_privacy_version is null or btrim(p_privacy_version) = '' or char_length(p_privacy_version) > 20 then
+    raise exception 'A foglaláshoz el kell fogadni az adatkezelési tájékoztatót.' using errcode = 'PT400';
+  end if;
+
   if p_court is null or p_court not in ('piros', 'zold', 'lila') then
     raise exception 'Ismeretlen pálya.' using errcode = 'PT400';
   end if;
@@ -126,8 +146,8 @@ begin
   end if;
 
   begin
-    insert into public.bookings (court, start_at, end_at, name, phone)
-    values (p_court, v_start, v_end, v_name, v_phone)
+    insert into public.bookings (court, start_at, end_at, name, phone, privacy_version, privacy_accepted_at)
+    values (p_court, v_start, v_end, v_name, v_phone, btrim(p_privacy_version), now())
     returning id into v_id;
   exception
     when exclusion_violation then
@@ -143,6 +163,27 @@ $$;
 
 -- Jogosultságok: a weboldal (anon) csak ezt a két függvényt hívhatja.
 revoke execute on function public.get_busy_slots(date) from public;
-revoke execute on function public.create_booking(text, date, time, int, text, text) from public;
+revoke execute on function public.create_booking(text, date, time, int, text, text, text) from public;
 grant execute on function public.get_busy_slots(date) to anon, authenticated;
-grant execute on function public.create_booking(text, date, time, int, text, text) to anon, authenticated;
+grant execute on function public.create_booking(text, date, time, int, text, text, text) to anon, authenticated;
+
+
+-- ---------------------------------------------------------------------
+-- Adatmegőrzés: naponta 03:15-kor (UTC) törli azokat a foglalásokat,
+-- amelyek vége több mint 90 napja elmúlt.
+-- Ha a pg_cron nem érhető el, a séma többi része ettől még működik –
+-- ilyenkor Supabase → Integrations → Cron alatt kapcsold be, és futtasd újra.
+-- ---------------------------------------------------------------------
+do $$
+begin
+  create extension if not exists pg_cron with schema pg_catalog;
+  perform cron.schedule(
+    'playpadel-adattorles',
+    '15 3 * * *',
+    $job$delete from public.bookings where end_at < now() - interval '90 days'$job$
+  );
+  raise notice 'Automatikus adattörlés beütemezve (playpadel-adattorles).';
+exception when others then
+  raise warning 'Az automatikus adattörlés NEM lett beütemezve: %', sqlerrm;
+end
+$$;

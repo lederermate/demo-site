@@ -16,7 +16,9 @@ Statikus weboldal (HTML + CSS + JS) a budapesti Play Padel számára, három pá
 | `index.html`, `style.css`, `script.js` | az oldal |
 | `booking.js` | foglaltsági naptár és foglalás |
 | `config.js` | Supabase elérés (üresen = demó mód) |
-| `supabase/schema.sql` | adatbázis séma, ütközésvédelem, jogosultságok |
+| `supabase/schema.sql` | adatbázis séma, ütközésvédelem, jogosultságok, automatikus adattörlés |
+| `adatvedelem.html` | adatkezelési tájékoztató (a kiemelt céges adatok kitöltendők) |
+| `fonts/` | saját tárhelyről kiszolgált betűtípusok (Inter, Archivo – SIL OFL) |
 
 ## Foglalási rendszer beüzemelése (Supabase)
 
@@ -40,6 +42,12 @@ Statikus weboldal (HTML + CSS + JS) a budapesti Play Padel számára, három pá
   - `create_booking(...)` – ellenőrzi a nyitvatartást, a fél órás kezdést,
     az időtartamot (1 / 1,5 / 2 óra), hogy a jövőbe essen (max. 60 nap), és
     telefonszámonként legfeljebb 3 aktív foglalást enged.
+- **Adatkezelési tájékoztató:** foglalni csak a jelölőnégyzet bepipálásával lehet;
+  az elfogadott verzió és időpont foglalásonként rögzül (`privacy_version`,
+  `privacy_accepted_at`). Ha a tájékoztató változik, a `booking.js`-ben a
+  `PRIVACY_VERSION`-t és az `adatvedelem.html` verzióját is frissíteni kell.
+- **Adatmegőrzés:** a lejárt foglalások 90 nap után automatikusan törlődnek
+  (pg_cron, `playpadel-adattorles` feladat – Supabase → Integrations → Cron).
 - **Lemondás:** a Supabase *Table Editorban* a foglalás `status` mezőjét
   `cancelled`-re állítva az időpont azonnal újra szabad lesz.
 
@@ -54,4 +62,5 @@ majd: http://localhost:8000
 ## Megjegyzés
 
 A cím, telefonszám, e-mail, nyitvatartás és árak minta adatok – élesítés előtt cserélendők.
-Éles használat előtt adatkezelési tájékoztató szükséges (név és telefonszám tárolása).
+Az adatkezelési tájékoztató sablon: élesítés előtt a kiemelt adatokat ki kell tölteni, és
+javasolt jogi szakemberrel átnézetni.

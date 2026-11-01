@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Play Padel – Padel pályák Budapesten</title>
   <meta name="description" content="Play Padel Budapest: három padel pálya (piros, zöld, lila), pályafoglalás, szabályok és minden, amit a padelről tudni érdemes.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261101b">
+  <link rel="stylesheet" href="style.css?v=20261101c">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23d7f34a'/><path d='M14 38c22 8 50 8 72 0M14 62c22-8 50-8 72 0' stroke='%23fff' stroke-width='6' fill='none'/></svg>">
 </head>
 <body>
@@ -362,6 +359,11 @@
               <input type="tel" name="phone" autocomplete="tel" placeholder="+36 30 123 4567" required>
             </label>
 
+            <label class="consent">
+              <input type="checkbox" name="privacy" required>
+              <span>Elolvastam és elfogadom az <a href="adatvedelem.html" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>.</span>
+            </label>
+
             <button type="submit" class="btn btn-ball btn-block" id="submit-btn" disabled>Foglalás elküldése</button>
             <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
           </form>
@@ -404,12 +406,12 @@
         <span>Play<strong>Padel</strong></span>
       </a>
       <div class="footer-dots" aria-hidden="true"><i class="d-red"></i><i class="d-green"></i><i class="d-purple"></i></div>
-      <p>© <span id="year"></span> Play Padel Budapest</p>
+      <p>© <span id="year"></span> Play Padel Budapest · <a href="adatvedelem.html">Adatkezelési tájékoztató</a></p>
     </div>
   </footer>
 
-  <script src="config.js?v=20261101b"></script>
-  <script src="booking.js?v=20261101b"></script>
-  <script src="script.js?v=20261101b"></script>
+  <script src="config.js?v=20261101c"></script>
+  <script src="booking.js?v=20261101c"></script>
+  <script src="script.js?v=20261101c"></script>
 </body>
 </html>

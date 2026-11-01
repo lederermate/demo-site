@@ -11,6 +11,8 @@
   const SLOT = 30;          // perc
   const CLOSE = 22 * 60;    // zárás percben
   const DAYS_AHEAD = 14;    // ennyi nap látszik a naptárban
+  // Az adatkezelési tájékoztató aktuális verziója (adatvedelem.html) – foglalásonként rögzítjük
+  const PRIVACY_VERSION = '2026-11-01';
 
   const cfg = window.PLAY_PADEL_CONFIG || {};
   const LIVE = Boolean(cfg.supabaseUrl && cfg.supabaseKey);
@@ -39,7 +41,7 @@
   }
 
   class BookingError extends Error {
-    constructor(message, conflict = false) { super(message); this.conflict = conflict; }
+    constructor(message, conflict = false, code = '') { super(message); this.conflict = conflict; this.code = code; }
   }
 
   // ---------- adatréteg: Supabase ----------
@@ -57,7 +59,7 @@
       }
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        throw new BookingError((data && data.message) || 'Hiba történt, kérjük, próbáld újra.', res.status === 409);
+        throw new BookingError((data && data.message) || 'Hiba történt, kérjük, próbáld újra.', res.status === 409, data && data.code);
       }
       return data;
     },
@@ -66,10 +68,20 @@
       return rows.map((r) => ({ court: r.court, start: parseTime(r.start_time), end: parseTime(r.end_time) }));
     },
     async create(b) {
-      await this.rpc('create_booking', {
+      const args = {
         p_court: b.court, p_date: b.date, p_start: fmt(b.start) + ':00',
         p_minutes: b.minutes, p_name: b.name, p_phone: b.phone,
-      });
+        p_privacy_version: b.privacyVersion,
+      };
+      try {
+        await this.rpc('create_booking', args);
+      } catch (e) {
+        // Átmeneti: amíg az adatbázisban a régi (tájékoztató-paraméter nélküli)
+        // függvény fut, arra esünk vissza. A schema.sql újrafuttatása után törölhető.
+        if (e.code !== 'PGRST202') throw e;
+        delete args.p_privacy_version;
+        await this.rpc('create_booking', args);
+      }
     },
   };
 
@@ -301,6 +313,10 @@
     });
   });
 
+  form.elements.privacy.addEventListener('change', (e) => {
+    if (e.target.checked) e.target.closest('.consent').classList.remove('invalid');
+  });
+
   // ---------- "Ezt foglalom" linkek a pályakártyákon ----------
   document.querySelectorAll('[data-court]').forEach((link) => {
     link.addEventListener('click', () => {
@@ -317,6 +333,7 @@
 
     const nameEl = form.elements.name;
     const phoneEl = form.elements.phone;
+    const privacyEl = form.elements.privacy;
     const name = nameEl.value.trim();
     const phone = phoneEl.value.trim();
     const nameOk = name.length >= 2;
@@ -327,8 +344,17 @@
       setMsg(!nameOk ? 'Kérjük, add meg a neved.' : 'Kérjük, adj meg érvényes telefonszámot.', 'err');
       return;
     }
+    privacyEl.closest('.consent').classList.toggle('invalid', !privacyEl.checked);
+    if (!privacyEl.checked) {
+      setMsg('A foglaláshoz el kell fogadnod az adatkezelési tájékoztatót.', 'err');
+      privacyEl.focus();
+      return;
+    }
 
-    const booking = { court: state.court, date: state.date, start: state.start, minutes: state.minutes, name, phone };
+    const booking = {
+      court: state.court, date: state.date, start: state.start, minutes: state.minutes,
+      name, phone, privacyVersion: PRIVACY_VERSION,
+    };
     submitBtn.disabled = true;
     submitBtn.textContent = 'Küldés…';
     try {
