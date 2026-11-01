@@ -11,5 +11,5 @@
 // A "secret" / "service_role" kulcsot SOHA ne írd ide!
 window.PLAY_PADEL_CONFIG = {
   supabaseUrl: 'https://mvxakuksgydasbnyyfzf.supabase.co',
-  supabaseKey: '',
+  supabaseKey: 'sb_publishable_LcPN3pjPTcc9XulNSSvdig_Qlb6saFR',
 };
